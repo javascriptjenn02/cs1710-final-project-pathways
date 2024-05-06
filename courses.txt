@@ -1,0 +1,106 @@
+Fall: 
+
+CSCI0020	The Digital World
+CSCI0081	TA Apprenticeship: Full Credit
+CSCI0082	TA Apprenticeship: Half Credit
+CSCI0111	Computing Foundations: Data
+CSCI0112	Computing Foundations: Program Organization
+CSCI0150	Introduction to Object-Oriented Programming and Computer Science
+CSCI0170	CS: An Integrated Introduction
+CSCI0190	Accelerated Introduction to Computer Science
+CSCI0200	Program Design with Data Structures and Algorithms
+CSCI0320	Introduction to Software Engineering
+CSCI0330	Introduction to Computer Systems
+CSCI1010	Theory of Computation
+CSCI1230	Computer Graphics
+CSCI1234	Computer Graphics Lab
+CSCI1250	Introduction to Computer Animation
+CSCI1260	Compilers and Program Analysis
+CSCI1270	Database Management Systems
+CSCI1290	Computational Photography
+CSCI1330	Computer Systems (Master's students only)
+CSCI1340	Introduction to Software Engineering
+CSCI1360	Human Factors in Cybersecurity
+CSCI1410	Artificial Intelligence
+CSCI1430	Computer Vision
+CSCI1460	Computational Linguistics
+CSCI1510	Introduction to Cryptography and Computer Security
+CSCI1570	Design and Analysis of Algorithms
+CSCI1600	Real-time and Embedded Software
+CSCI1650	Software Security and Exploitation
+CSCI1680	Computer Networks
+CSCI1730	Design and Implementation of Programming Languages
+CSCI1760	Multiprocessor Synchronization
+CSCI1805	Computers, Freedom and Privacy: Current Topics in Law and Policy
+CSCI1810	Computational Molecular Biology
+CSCI1860	Cybersecurity Law and Policy
+CSCI1870	Cybersecurity Ethics
+CSCI1950-N	2D Game Engines
+CSCI1951-X	Formal Proof and Verification
+CSCI1952-X	Contemporary Digital Policy and Politics
+CSCI1953-A	Accessible and Inclusive Cybersecurity and Privacy
+CSCI2230	Computer Graphics
+CSCI2340	Software Engineering
+CSCI2370	Interdisciplinary Scientific Visualization
+CSCI2810	Advanced Computational Molecular Biology
+CSCI2951-E	Topics in Computer System Security
+CSCI2951-I	Computer Vision for Graphics and Interaction
+CSCI2952-Q	Robust Algorithms for Machine Learning
+CSCI2952-R	Systems Transforming Systems
+CSCI2999-A	Cybersecurity Management Within Business, Government, and Non-Profit Organizations
+
+Spring 
+CSCI0081	TA Apprenticeship: Full Credit
+CSCI0082	TA Apprenticeship: Half Credit
+CSCI0111	Computing Foundations: Data
+CSCI0200	Program Design with Data Structures and Algorithms
+CSCI0220	Introduction to Discrete Structures and Probability
+CSCI0300	Fundamentals of Computer Systems
+CSCI0320	Introduction to Software Engineering
+CSCI0500	Data Structures, Algorithms, and Intractability: An Introduction
+CSCI1040	The Basics of Cryptographic Systems
+CSCI1300	User Interfaces and User Experience
+CSCI1310	Fundamentals of Computer Systems
+CSCI1340	Introduction to Software Engineering
+CSCI1380	Distributed Computer Systems
+CSCI1420	Machine Learning
+CSCI1430	Computer Vision
+CSCI1440	Algorithmic Game Theory
+CSCI1470	Deep Learning
+CSCI1515	Applied Cryptography
+CSCI1550	Probabilistic Methods in Computer Science
+CSCI1620	Computer Systems Security Lab
+CSCI1660	Computer Systems Security
+CSCI1670	Operating Systems
+CSCI1690	Operating Systems Laboratory
+CSCI1710	Logic for Systems
+CSCI1800	Cybersecurity and International Relations
+CSCI1820	Algorithmic Foundations of Computational Biology
+CSCI1880	Introduction to Computer Security
+CSCI1950-U	Topics in 3D Game Engine Development
+CSCI1951-A	Data Science
+CSCI1951-L	Blockchains & Cryptocurrencies
+CSCI1951-Z	Fairness in Automated Decision Making
+CSCI1952-B	Responsible Computer Science in Practice
+CSCI1952-Q	Robust Algorithms for Machine Learning
+CSCI1952-X	Contemporary Digital Policy and Politics
+CSCI1952-Y	Computer Architecture
+CSCI1952-Z	Robots as a Medium: Creating art with teams of robots
+CSCI2002	Privacy and Personal Data Protection
+CSCI2240	Interactive Computer Graphics
+CSCI2270	Topics in Database Management
+CSCI2340	Software Engineering
+CSCI2440	Advanced Algorithmic Game Theory
+CSCI2470	Deep Learning
+CSCI2500-B	Optimization Algorithms for Planar Graphs
+CSCI2540	Advanced Probabilistic Methods in Computer Science
+CSCI2660	Computer Systems Security
+CSCI2670	Operating Systems
+CSCI2820	Algorithmic Foundations in Computational Biology
+CSCI2951-F	Learning and Sequential Decision Making
+CSCI2951-O	Foundations of Prescriptive Analytics
+CSCI2951-U	Topics in Software Security
+CSCI2951-X	Reintegrating AI
+CSCI2952-N	Advanced Topics in Deep Learning
+CSCI2952-O	A Practical Introduction to Advanced 3D Robot Perception
+CSCI2952-S	Topics in Cyber and Digital Policy

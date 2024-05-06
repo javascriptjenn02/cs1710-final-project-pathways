@@ -1,23 +1,50 @@
 #lang forge/bsl
 
 /**
-this is the courses sig, it represents a single course with a start and an end time. 
+this is the courses sig, it represents a single course with a set of prereqs
 **/
 sig Course {
-    start: one Int,
-    end: one Int
+    // start: one Int,
+    // end: one Int, 
+    prereqs: set Course
 }
 
 /*
 * This is the Cart sig, it has four fields for 4 different courses. One of the fields is lone, 
 * meaning that 3 course carts are possible
 */
-one sig Cart {
-    course1: one Course,
-    course2: one Course,
-    course3: one Course,
-    course4: lone Course
+abstract sig Semester {
+    // course1: one Course,
+    // course2: one Course,
+    // course3: one Course,
+    // course4: lone Course
+    courses: set Course,
+    next: Semester, 
 }
+
+sig FallSemester extends Semester {}
+sig SpringSemester extends Semester {}
+
+one sig Registry {
+    fallRegistry: set Course, 
+    springRegistry: set Course, 
+    intros: set Course, 
+    intermediates: set Course, 
+    upperLevels: set Course
+}
+
+one sig PathWays {
+    data: set Course, 
+    visual: set Course, 
+    security: set Course, 
+    ai: set Course, 
+    design: set Course, 
+    theory: set Course
+}
+
+//OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
+sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220 CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
+  CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952X, CS1952Y, CS1952Z extends Course {}
 
 
 /**
