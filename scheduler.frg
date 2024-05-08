@@ -20,7 +20,8 @@ abstract sig Semester {
     // course3: one Course,
     // course4: lone Course
     courses: set Course,
-    next: lone Semester
+    next: lone Semester,
+    prev: lone Semester
 }
 
 sig FallSemester extends Semester {}
@@ -63,7 +64,6 @@ pred coursesInCorrectPathway {
 }
 
 pred coursesHaveCorrectPreReqs {
-
 }
 
 
@@ -78,7 +78,62 @@ pred init {
     coursesHaveCorrectPreReqs
 }
 
-run init for exactly 7 Semester
+pred semestersLinear {
+    //defining one head and one tail
+    //ideally, this is a property we could test but this is to enforce that we get an instance of next and prev
+    #{s: Semester | s.prev = none} = 1
+    #{s: Semester | s.next = none} = 1
+    all s : Semester {
+        some s.next implies {
+            s.next != s   
+            s.next.prev = s   
+            not reachable[s, s, next]      
+        } 
+        some s.prev implies {
+            s.prev != s
+            s.prev.next = s
+            not reachable[s, s, prev]
+        }
+    }
+    //property to test to verify this is correct: ~next = prev
+ }
+
+ pred semestersCourseLoadValid {
+    all s : Semester {
+        #{s.courses} > 2
+        #{s.courses} < 6
+    }
+ }
+
+ pred semestersRespectPreReqs {
+    all s : Semester {
+        all c : s.courses | {
+            all req : c.prereqs | some prevS: Semester | reachable[prevS, s, prev] and req in prevS.courses 
+        }
+    }
+ }
+
+ pred semestersCoursesOneTime {
+    all c : Course | {
+        //courses can only be taken 0 or 1 time
+        #{courses.c} < 2
+    }
+    // some {c: Course | some s1, s2 : Semester | s1 != s2 and c in s1.courses and c in s2.courses}
+ }
+pred traces {
+    {init}
+    //we have to make the semester linear (think back to familyfact)
+    {semestersLinear}
+    //sems should have 3-5 courses
+    {semestersCourseLoadValid}
+    // //prereqs need to be satisfied before having a class
+    {semestersRespectPreReqs}
+    // //can only take a course once
+    {semestersCoursesOneTime}
+
+}
+
+run traces for exactly 7 Semester
 /**
 *This predicate ensues that two courses don't overlap.
 **/
