@@ -60,6 +60,13 @@ pred coursesInCorrectLevel {
 }
 
 pred coursesInCorrectPathway {
+    Pathways.data = {CS1420 + CS1270 + CS1951A + CS1550}
+    //Pathways.visual = {CS1230}  should we add graphics and 1280
+    Pathways.visual = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430 + CS1470 + CS1950U + CS1950N}
+    Pathways.security = {CS1510 + CS1515 + CS1650 + CS1660 + CS1360 + CS1380 + CS1040 + CS1670 + CS1680 + CS1710 + CS1730 + CS1800 + CS1805 + CS1860 + CS1870 + CS1951L}
+    Pathways.ai = {CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1952Q + CS1440 + CS1550 + CS1951A + CS1951Z}
+    Pathways.design = {CS1230 + CS1300 + CS1370 + CS1360 + CS1600 + CS1951A + CS1952B}
+    Pathways.theory = {CS1510 + CS1550 + CS1570 + CS1760 + CS1951X + CS1440 + CS1810 + CS1710 + CS1952Q}
 
 }
 
