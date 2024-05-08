@@ -47,16 +47,23 @@ one sig PathWays {
 //OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
 one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
   CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1820, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952Y, CS1952Z extends Course {}
+//probability and statistics
+one sig APMA1650, APMA1655 extends Course {}
+//lin alg 
+one sig MATH0520, MATH0540 extends Course {}
+//math 
+one sig MATH0100 extends Course {}
 
 pred coursesInCorrectRegistrars {
-    Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A}
-    Registry.springRegistry = {CS0111 + CS0200 + CS0220 + CS0320 + CS0300 + CS0500 + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
+    Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + APMA1650 + APMA1655 + MATH0100 + MATH0520 + MATH0540}
+    Registry.springRegistry = {CS0111 + CS0200 + CS0220 + CS0320 + CS0300 + CS0500 + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z + APMA1650 + APMA1655 + MATH0100 + MATH0520 + MATH0540}
 }
 
 pred coursesInCorrectLevel {
     Registry.intros = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190}
-    Registry.intermediates = {CS0220 + CS0330 + CS0300 + CS0320 + CS0500}
-    Registry.upperLevels = (Registry.fallRegistry + Registry.springRegistry) - (Registry.intros + Registry.intermediates + CS0200)
+    // Registry.intermediates = {CS0220 + CS0330 + CS0300 + CS0320 + CS0500}
+    // Registry.upperLevels = (Registry.fallRegistry + Registry.springRegistry) - (Registry.intros + Registry.intermediates + CS0200)
+    Registry.upperLevels = {CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
 }
 
 pred coursesInCorrectPathway {
@@ -78,11 +85,11 @@ pred init {
     // Place it in the correct semester registrar
     {coursesInCorrectRegistrars} 
     // Place it in the correct level: intro intermediate upperlevel
-    coursesInCorrectLevel
+    {coursesInCorrectLevel}
     // Place it in the correct pathway(s)
-    coursesInCorrectPathway
+    {coursesInCorrectPathway}
     // Give it the correct pre-reqs
-    coursesHaveCorrectPreReqs
+    {coursesHaveCorrectPreReqs}
 }
 
 pred semestersLinear {
@@ -127,6 +134,23 @@ pred semestersLinear {
     }
     // some {c: Course | some s1, s2 : Semester | s1 != s2 and c in s1.courses and c in s2.courses}
  }
+
+ pred semestersAlternate {
+    all s : Semester | {
+        s in FallSemester or s in SpringSemester
+        not (s in FallSemester and s in SpringSemester)
+        s in FallSemester implies {
+            some s.next implies s.next in SpringSemester
+            some s.prev implies s.prev in SpringSemester
+        }
+    }
+ }
+
+ pred semestersTakeCorrectCourses {
+    all s : Semester | {
+        s in FallSemester implies s.courses in Registry.fallRegistry else s.courses in Registry.springRegistry
+    }
+ }
 pred traces {
     {init}
     //we have to make the semester linear (think back to familyfact)
@@ -137,6 +161,10 @@ pred traces {
     {semestersRespectPreReqs}
     // //can only take a course once
     {semestersCoursesOneTime}
+    //semesters alternate between fall and spring
+    {semestersAlternate}
+    //Spring semesters can only take Spring courses and fall semester can only take fall courses
+    {semestersTakeCorrectCourses}
 
 }
 
