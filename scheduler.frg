@@ -7,6 +7,7 @@ sig Course {
     // start: one Int,
     // end: one Int, 
     prereqs: set Course
+
 }
 
 /*
@@ -43,17 +44,18 @@ one sig PathWays {
 }
 
 //OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
-sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
-  CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952Y, CS1952Z extends Course {}
+one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
+  CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1820, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952Y, CS1952Z extends Course {}
 
 pred coursesInCorrectRegistrars {
-    CS0111 in Registry.springRegistry and 
-    CS0111 in Registry.fallRegistry and 
-    {CS0111 + CS0150 + CS0170} = Registry.fallRegistry
+    Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A}
+    Registry.springRegistry = {CS0111 + CS0200 + CS0220 + CS0320 + CS0300 + CS0500 + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
 }
 
 pred coursesInCorrectLevel {
-
+    Registry.intros = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190}
+    Registry.intermediates = {CS0220 + CS0330 + CS0300 + CS0320 + CS0500}
+    Registry.upperLevels = (Registry.fallRegistry + Registry.springRegistry) - (Registry.intros + Registry.intermediates + CS0200)
 }
 
 pred coursesInCorrectPathway {
@@ -67,7 +69,7 @@ pred coursesHaveCorrectPreReqs {
 
 pred init {
     // Place it in the correct semester registrar
-    coursesInCorrectRegistrars 
+    {coursesInCorrectRegistrars} 
     // Place it in the correct level: intro intermediate upperlevel
     coursesInCorrectLevel
     // Place it in the correct pathway(s)
