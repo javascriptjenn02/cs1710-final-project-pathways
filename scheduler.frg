@@ -35,14 +35,14 @@ one sig Registry {
     upperLevels: set Course
 }
 
+
 one sig PathWays {
-    data: set Course, 
-    visual: set Course, 
-    security: set Course, 
-    ai: set Course, 
-    design: set Course, 
-    theory: set Course
+    core: set Course, 
+    related: set Course,
+    intermediate: set Course
 }
+
+one sig Data_path, Visual_path, Security_path, AI_path, Design_path, Theory_path extends PathWays {}
 
 //OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
 one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
@@ -67,13 +67,14 @@ pred coursesInCorrectLevel {
 }
 
 pred coursesInCorrectPathway {
-    Pathways.data = {CS1420 + CS1270 + CS1951A + CS1550}
+    Data_path.core = {CS1420 + CS1270 + CS1951A}
+    Data_path.related = {CS1550}
     //Pathways.visual = {CS1230}  should we add graphics and 1280
-    Pathways.visual = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430 + CS1470 + CS1950U + CS1950N}
-    Pathways.security = {CS1510 + CS1515 + CS1650 + CS1660 + CS1360 + CS1380 + CS1040 + CS1670 + CS1680 + CS1710 + CS1730 + CS1800 + CS1805 + CS1860 + CS1870 + CS1951L}
-    Pathways.ai = {CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1952Q + CS1440 + CS1550 + CS1951A + CS1951Z}
-    Pathways.design = {CS1230 + CS1300 + CS1370 + CS1360 + CS1600 + CS1951A + CS1952B}
-    Pathways.theory = {CS1510 + CS1550 + CS1570 + CS1760 + CS1951X + CS1440 + CS1810 + CS1710 + CS1952Q}
+    // Pathways.visual = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430 + CS1470 + CS1950U + CS1950N}
+    // Pathways.security = {CS1510 + CS1515 + CS1650 + CS1660 + CS1360 + CS1380 + CS1040 + CS1670 + CS1680 + CS1710 + CS1730 + CS1800 + CS1805 + CS1860 + CS1870 + CS1951L}
+    // Pathways.ai = {CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1952Q + CS1440 + CS1550 + CS1951A + CS1951Z}
+    // Pathways.design = {CS1230 + CS1300 + CS1370 + CS1360 + CS1600 + CS1951A + CS1952B}
+    // Pathways.theory = {CS1510 + CS1550 + CS1570 + CS1760 + CS1951X + CS1440 + CS1810 + CS1710 + CS1952Q}
 
 }
 
@@ -167,6 +168,17 @@ pred traces {
     {semestersTakeCorrectCourses}
 
 }
+
+//is this needed since all courses basically require intro course
+pred introSat {
+    all s : Semester {
+        all c : s.courses | {
+            some req : c.prereqs | some prevS: Semester | one reg : Registry | reachable[prevS, s, prev] and req in r.intros
+        }
+    }
+}
+
+
 
 run traces for exactly 7 Semester
 /**
