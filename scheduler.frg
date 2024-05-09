@@ -31,7 +31,7 @@ one sig Registry {
     fallRegistry: set Course, 
     springRegistry: set Course, 
     intros: set Course, 
-    upperLevels: set Course
+    upperLevels: set Course,
     foundationsInter: set Course, 
     mathInter: set Course, 
     systemsInter: set Course
@@ -61,7 +61,7 @@ pred coursesInCorrectRegistrars {
 pred coursesInCorrectLevel {
     Registry.intros = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190}
     Registry.foundationsInter = {CS0220 + CS1010}
-    Registry.systemInter = {CS0320 + CS0330 + CS0300}
+    Registry.systemsInter = {CS0320 + CS0330 + CS0300}
     Registry.mathInter = {MATH0520 + MATH0540}
     Registry.upperLevels = {CS1010 + CS1230 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
 }
