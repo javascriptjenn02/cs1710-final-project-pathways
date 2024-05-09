@@ -31,12 +31,14 @@ one sig Registry {
     fallRegistry: set Course, 
     springRegistry: set Course, 
     intros: set Course, 
-    intermediates: set Course, 
     upperLevels: set Course
+    foundationsInter: set Course, 
+    mathInter: set Course, 
+    systemsInter: set Course
 }
 
 
-one sig PathWays {
+abstract sig PathWays {
     core: set Course, 
     related: set Course,
     intermediate: set Course
@@ -45,33 +47,31 @@ one sig PathWays {
 one sig Data_path, Visual_path, Security_path, AI_path, Design_path, Theory_path extends PathWays {}
 
 //OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
-one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1250, CS1260, CS1270, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
-  CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1820, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952Y, CS1952Z extends Course {}
-//probability and statistics
-one sig APMA1650, APMA1655 extends Course {}
-//lin alg 
-one sig MATH0520, MATH0540 extends Course {}
-//math 
-one sig MATH0100 extends Course {}
+one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, CS1010, CS1230, CS1250, CS1260, CS1270, CS1280, CS1290, CS1360, CS1410, CS1430, CS1460, CS1510, CS1570, CS1600, CS1650, CS1680, CS1730, CS1760, CS1805, CS1810, CS1860, CS1870, CS1950N, CS1951X, CS1952X, CS1953A,
+  CS0300, CS0500, CS1040, CS1300, CS1310, CS1380, CS1420, CS1440, CS1470, CS1515, CS1550, CS1620, CS1660, CS1670, CS1710, CS1800, CS1820, CS1880, CS1950U, CS1951A, CS1951L, CS1951Z, CS1952B, CS1952Q, CS1952Y, CS1952Z, 
+  APMA1650, APMA1655, 
+  MATH0520, MATH0540, 
+  MATH0100 extends Course {}
 
 pred coursesInCorrectRegistrars {
-    Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + APMA1650 + APMA1655 + MATH0100 + MATH0520 + MATH0540}
+    Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1280 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + APMA1650 + APMA1655 + MATH0100 + MATH0520 + MATH0540}
     Registry.springRegistry = {CS0111 + CS0200 + CS0220 + CS0320 + CS0300 + CS0500 + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z + APMA1650 + APMA1655 + MATH0100 + MATH0520 + MATH0540}
 }
 
 pred coursesInCorrectLevel {
     Registry.intros = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190}
-    // Registry.intermediates = {CS0220 + CS0330 + CS0300 + CS0320 + CS0500}
-    // Registry.upperLevels = (Registry.fallRegistry + Registry.springRegistry) - (Registry.intros + Registry.intermediates + CS0200)
-    Registry.upperLevels = {CS1010 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
+    Registry.foundationsInter = {CS0220 + CS1010}
+    Registry.systemInter = {CS0320 + CS0330 + CS0300}
+    Registry.mathInter = {MATH0520 + MATH0540}
+    Registry.upperLevels = {CS1010 + CS1230 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X + CS1952X + CS1953A + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1620 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1880 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q + CS1952X + CS1952Y + CS1952Z}
 }
 
 pred coursesInCorrectPathway {
     Data_path.core = {CS1420 + CS1270 + CS1951A}
     Data_path.related = {CS1550}
-    Data_path.intermediate = {APMA1650 + APMA1655 + CS0320 + CS0300 + CS0330 + MATH520 + MATH540}
+    Data_path.intermediate = {APMA1650 + APMA1655 + CS0320 + CS0300 + CS0330 + MATH0520 + MATH0540}
 
-    Visual_path.core = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430}
+    Visual_path.core = {CS1230 + CS1250 + CS1280 + CS1290 + CS1300 + CS1430}
     //Pathways.visual = {CS1230}  should we add graphics and 1280
     Visual_path.related = {CS1470 + CS1950U + CS1950N}
     Visual_path.intermediate = {CS0300 + CS0320 + CS0330}
@@ -84,7 +84,7 @@ pred coursesInCorrectPathway {
     AI_path.related = {CS1440 + CS1550 + CS1951A + CS1951Z}
     AI_path.intermediate = {APMA1650 + APMA1655 + MATH0520 + MATH0540}
 
-    Design_path.core = {CS1230 + CS1300 + CS1370}
+    Design_path.core = {CS1230 + CS1300}
     Design_path.related = {CS1360 + CS1600 + CS1951A + CS1952B}
     Design_path.intermediate = {CS0320 + CS0300 + CS0330 + APMA1650 + APMA1655}
 
@@ -103,9 +103,9 @@ pred init {
     {coursesInCorrectRegistrars} 
     // Place it in the correct level: intro intermediate upperlevel
     {coursesInCorrectLevel}
-    // Place it in the correct pathway(s)
-    {coursesInCorrectPathway}
-    // Give it the correct pre-reqs
+    // // Place it in the correct pathway(s)
+     {coursesInCorrectPathway}
+    // // Give it the correct pre-reqs
     {coursesHaveCorrectPreReqs}
 }
 
@@ -157,9 +157,14 @@ pred semestersLinear {
     all s : Semester | {
         s in FallSemester or s in SpringSemester
         not (s in FallSemester and s in SpringSemester)
+
         s in FallSemester implies {
             some s.next implies s.next in SpringSemester
             some s.prev implies s.prev in SpringSemester
+        }
+        s in SpringSemester implies {
+            some s.next implies s.next in FallSemester
+            some s.prev implies s.prev in FallSemester
         }
     }
  }
@@ -175,47 +180,43 @@ pred traces {
     {semestersLinear}
     //sems should have 3-5 courses
     {semestersCourseLoadValid}
-    // //prereqs need to be satisfied before having a class
+    //prereqs need to be satisfied before having a class
     {semestersRespectPreReqs}
-    // //can only take a course once
+    //can only take a course once
     {semestersCoursesOneTime}
     //semesters alternate between fall and spring
     {semestersAlternate}
     //Spring semesters can only take Spring courses and fall semester can only take fall courses
     {semestersTakeCorrectCourses}
-
 }
 
 //is this needed since all courses basically require intro course
 //intro seq set should be cs19 and cs200 since pre-reqs require 15, 17, etc. 
 pred introSat {
-    all s : Semester {
-        all c : s.courses | {
-            some prevS: Semester | all reg : Registry | reachable[prevS, s, prev] and req in reg.intros and req in prevS.courses
-        }
-    }
+    CS0200 in Semester.courses or CS0190 in Semester.courses
 }
 
 pred pathwayCompletedAB {
-    all s : Semester {
-        some c : s.courses | {
-            some prevS: Semester | some 
-        }
-    }
+    //there is one foundations intermediate
+    //there is one math intermediate
+    //there is one systems intermediate
 
-    
-
-
+    //say that there's some pathway P |
+        //the union of p.core and courses is > 0
+        //{the union of p.core and Semester.courses + the union of p.related and Semester.courses} >= 2
+        //and 
+        //there is some course extraUL | extraUL is in Semester.courses, not in p.core, not in p.related, and in upperLevels
 }
 
 pred fulfilledAB {
+    traces
     introSat
     pathwayCompletedAB
 }
 
 
 
-run traces for exactly 7 Semester
+run {fulfilledAB} for exactly 7 Semester
 /**
 *This predicate ensues that two courses don't overlap.
 **/
