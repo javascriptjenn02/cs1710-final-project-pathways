@@ -69,12 +69,28 @@ pred coursesInCorrectLevel {
 pred coursesInCorrectPathway {
     Data_path.core = {CS1420 + CS1270 + CS1951A}
     Data_path.related = {CS1550}
+    Data_path.intermediate = {APMA1650 + APMA1655 + CS0320 + CS0300 + CS0330 + MATH520 + MATH540}
+
+    Visual_path.core = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430}
     //Pathways.visual = {CS1230}  should we add graphics and 1280
-    // Pathways.visual = {CS1250 + CS1280 + CS1290 + CS1300 + CS1430 + CS1470 + CS1950U + CS1950N}
-    // Pathways.security = {CS1510 + CS1515 + CS1650 + CS1660 + CS1360 + CS1380 + CS1040 + CS1670 + CS1680 + CS1710 + CS1730 + CS1800 + CS1805 + CS1860 + CS1870 + CS1951L}
-    // Pathways.ai = {CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1952Q + CS1440 + CS1550 + CS1951A + CS1951Z}
-    // Pathways.design = {CS1230 + CS1300 + CS1370 + CS1360 + CS1600 + CS1951A + CS1952B}
-    // Pathways.theory = {CS1510 + CS1550 + CS1570 + CS1760 + CS1951X + CS1440 + CS1810 + CS1710 + CS1952Q}
+    Visual_path.related = {CS1470 + CS1950U + CS1950N}
+    Visual_path.intermediate = {CS0300 + CS0320 + CS0330}
+
+    Security_path.core = {CS1510 + CS1515 + CS1650 + CS1660}
+    Security_path.related = {CS1360 + CS1380 + CS1040 + CS1670 + CS1680 + CS1710 + CS1730 + CS1800 + CS1805 + CS1860 + CS1870 + CS1951L}
+    Security_path.intermediate = {CS0220 + APMA1650 + APMA1655 + CS0300 + CS0330}
+
+    AI_path.core = {CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1952Q}
+    AI_path.related = {CS1440 + CS1550 + CS1951A + CS1951Z}
+    AI_path.intermediate = {APMA1650 + APMA1655 + MATH0520 + MATH0540}
+
+    Design_path.core = {CS1230 + CS1300 + CS1370}
+    Design_path.related = {CS1360 + CS1600 + CS1951A + CS1952B}
+    Design_path.intermediate = {CS0320 + CS0300 + CS0330 + APMA1650 + APMA1655}
+
+    Theory_path.core = {CS1510 + CS1550 + CS1570 + CS1760 + CS1951X}
+    Theory_path.related = {CS1440 + CS1810 + CS1710 + CS1952Q}
+    Theory_path.intermediate = {APMA1650 + APMA1655 + CS1010 + MATH0520 + MATH0540}
 
 }
 
@@ -127,6 +143,7 @@ pred semestersLinear {
         }
     }
  }
+ 
 
  pred semestersCoursesOneTime {
     all c : Course | {
@@ -170,12 +187,30 @@ pred traces {
 }
 
 //is this needed since all courses basically require intro course
+//intro seq set should be cs19 and cs200 since pre-reqs require 15, 17, etc. 
 pred introSat {
     all s : Semester {
         all c : s.courses | {
-            some req : c.prereqs | some prevS: Semester | one reg : Registry | reachable[prevS, s, prev] and req in r.intros
+            some prevS: Semester | all reg : Registry | reachable[prevS, s, prev] and req in reg.intros and req in prevS.courses
         }
     }
+}
+
+pred pathwayCompletedAB {
+    all s : Semester {
+        some c : s.courses | {
+            some prevS: Semester | some 
+        }
+    }
+
+    
+
+
+}
+
+pred fulfilledAB {
+    introSat
+    pathwayCompletedAB
 }
 
 
