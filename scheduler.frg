@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-//option solver MiniSatProver
+option solver MiniSatProver
 -- FOR MAC
- option solver Glucose
+//  option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -147,7 +147,7 @@ pred semestersLinear {
     all s : Semester {
         all c : s.courses | {
             all x : (c.prereqs).Course | {
-                some req: x.(c.prereqs) | some prevS: Semester | reachable[prevS, s, prev] and req in prevS.courses
+                some req: x.(c.prereqs) | req in (s.^prev).courses
             }
             // all req : c.prereqs | some prevS: Semester | reachable[prevS, s, prev] and req in prevS.courses 
         }
@@ -210,14 +210,8 @@ pred introSat {
 
 
 pred pathwayCompletedAB[p : PathWays] {
-    //there is one foundations intermediate
-    //there is one math intermediate
-    //there is one systems intermediate
-    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
-    #{c : Course | c in Semester.courses and c in Registry.mathInter}>= 1
-    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
     //Note from Juan: i think this doesnt constrain that minimum one needs to come from core
-    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 2 or (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
+    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 1 and (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
     #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} >= 1
 
     //say that there's some pathway P |
@@ -228,6 +222,12 @@ pred pathwayCompletedAB[p : PathWays] {
     }
 
 pred onePathwayDoneAB {
+        //there is one foundations intermediate
+    //there is one math intermediate
+    //there is one systems intermediate
+    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
+    #{c : Course | c in Semester.courses and c in Registry.mathInter}>= 1
+    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
     some p: PathWays {
         pathwayCompletedAB[p]
     } 
