@@ -1,11 +1,13 @@
-# Course Scheduler README
+# CS1710 Final Project: Pathways README 
+## Juan Garcia (jgarci17) and Jennifer Tran (jtran43)
 
 ## Project Objective 
 In this project, we wanted to explore a feature that has been integral and helpful to our experiences as a student. Platforms like Courses at Brown, help students create and explore possible course schedules. However, we wonder what students used prior to the creation of courses at brown. We wanted to explore this through modeling a course scheduler.
 
 After a simple Google search, we learned that course scheduling would happen in person, and people would physically stand in line to sign up. Some people even reported (on reddit) having to call their counselors and telling them which courses they wanted. This means that features on Courses at Brown, like the warning messages that alert students of scheduling conflicts, had to be done manually. This project explores how course schedulers create and approve valid schedules. 
 
-## Model Design and Visualization
+## Model Design
+### Abstraction Choices
 We decided to create a sig representing a cart, as well as 4 fields in that sig that represent the four courses a student can take. We represent a single course using a Course sig. One of the courses in the cart is a lone sig, representing the option for students to take 3 courses instead of 4. (we don’t pay attention to the overachievers lol). We have the following run statement: 
 
 

@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-option solver MiniSatProver
+//option solver MiniSatProver
 -- FOR MAC
-// option solver Glucose
+ option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -102,7 +102,6 @@ pred coursesHaveCorrectPreReqs {
     CS0200.prereqs = ((0 -> CS0111) + (0 -> CS0150) + (0 -> CS0112) + (0 -> CS0170) + (0 -> CS0190))
     CS0300.prereqs = ((0 -> CS0200))
     CS1710.prereqs = ((0 -> CS0300) + (1 -> CS0220))
-    CS1710 in Semester.courses
 }
 
 
@@ -201,7 +200,7 @@ pred traces {
     {semestersTakeCorrectCourses}
 }
 
-run traces for exactly 7 Semester
+// run traces for exactly 7 Semester, 6 Int
 
 //is this needed since all courses basically require intro course
 //intro seq set should be cs19 and cs200 since pre-reqs require 15, 17, etc. 
@@ -229,7 +228,7 @@ pred pathwayCompletedAB[p : PathWays] {
     }
 
 pred onePathwayDoneAB {
-    one p: PathWays {
+    some p: PathWays {
         pathwayCompletedAB[p]
     } 
 
@@ -289,7 +288,7 @@ pred fulfilledScB {
 }
 
 
-// run {fulfilledAB} for exactly 7 Semester
+run {fulfilledAB} for exactly 7 Semester, 6 Int
 // run {fulfilledScB fulfilledAB} for exactly 7 Semester
 
 pred satisfiesNewMathFoundation[c: Course] {
