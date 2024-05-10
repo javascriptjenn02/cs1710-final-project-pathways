@@ -196,27 +196,82 @@ pred introSat {
     CS0200 in Semester.courses or CS0190 in Semester.courses
 }
 
-pred pathwayCompletedAB {
+
+pred pathwayCompletedAB[p : PathWays] {
     //there is one foundations intermediate
     //there is one math intermediate
     //there is one systems intermediate
+    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
+    #{c : Course | c in Semester.courses and c in Registry.mathInter}>= 1
+    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
+
+    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 2 or (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
+    #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} >= 1
 
     //say that there's some pathway P |
         //the union of p.core and courses is > 0
         //{the union of p.core and Semester.courses + the union of p.related and Semester.courses} >= 2
         //and 
         //there is some course extraUL | extraUL is in Semester.courses, not in p.core, not in p.related, and in upperLevels
+    }
+
+pred onePathwayDoneAB {
+    one p: PathWays {
+        pathwayCompletedAB[p]
+    } 
+    //We can use this constraint if we want to underconstrain (allow multiple pathways to be completed):
+    // pathwayCompletedAB[Data_path] or pathwayCompletedAB[Visual_path] or pathwayCompletedAB[Security_path] 
+    // or pathwayCompletedAB[AI_path] or pathwayCompletedAB[Design_path] or pathwayCompletedAB[Theory_path]
 }
 
 pred fulfilledAB {
     traces
     introSat
-    pathwayCompletedAB
+    onePathwayDoneAB
+}
+
+pred pathwayCompletedScB[p: PathWays] {
+    //there is one foundations intermediate
+    //there is one math intermediate
+    //there is one systems intermediate
+    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
+    //The probability courses are missing, maybe take out the honors courses (540 and 1655) because you can only take one
+    #{c : Course | c in Semester.courses and c in Registry.mathInter} = 1
+    //ACTUALLY only one systems course can be counted towards concentration so change this to one perhaps
+    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
+    #{c : Course | (c in (Semester.courses & (Registry.foundationsInter +  Registry.mathInter + Registry.systemsInter))) } >= 5
+
+    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 2 or (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
+   // #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} = 1
+    //#{c : Course | (c in Semester.courses) and (c in Registry.upperLevels - (Semester.courses & p.core & p.related))} >= 3
+    //AHHHH AM I OVER CONSTRAINING?? elective courses can be in pathway as long as there is at least one upperlevel course that is unrelated 
+    #{c : Course | (c in Registry.upperLevels) and (c in (Semester.courses - (p.core + p.related)))} >=3
+
+
+    //say that there's some pathway P |
+        //the union of p.core and courses is > 0
+        //{the union of p.core and Semester.courses + the union of p.related and Semester.courses} >= 2
+        //and 
+        //there is some course extraUL | extraUL is in Semester.courses, not in p.core, not in p.related, and in upperLevels
+    }
+
+pred twoPathwaysDoneScB{
+    one p1, p2, p3, p4, p5, p6 : PathWays {
+        pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
+        (!pathwayCompletedScB[p3] and !pathwayCompletedScB[p4] and !pathwayCompletedScB[p5] and !pathwayCompletedScB[p6])
+    } 
+        
+
+}
+pred fulfilledScB {
+    traces
+    introSat
+    twoPathwaysDoneScB
 }
 
 
-
-run {fulfilledAB} for exactly 7 Semester
+//run {fulfilledAB} for exactly 7 Semester
+run {fulfilledScB fulfilledAB} for exactly 7 Semester
 /**
 *This predicate ensues that two courses don't overlap.
 **/
