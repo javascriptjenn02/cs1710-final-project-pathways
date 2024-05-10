@@ -204,7 +204,7 @@ pred pathwayCompletedAB[p : PathWays] {
     #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
     #{c : Course | c in Semester.courses and c in Registry.mathInter}>= 1
     #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
-
+    //Note from Juan: i think this doesnt constrain that minimum one needs to come from core
     #{c : Course | (c in Semester.courses) and (c in p.core)} >= 2 or (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
     #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} >= 1
 
@@ -219,9 +219,14 @@ pred onePathwayDoneAB {
     one p: PathWays {
         pathwayCompletedAB[p]
     } 
+
+    //Proposed by Juan: if this is faster we can do this
+    // some p : PathWays | pathwayCompletedAB[p]
+
     //We can use this constraint if we want to underconstrain (allow multiple pathways to be completed):
     // pathwayCompletedAB[Data_path] or pathwayCompletedAB[Visual_path] or pathwayCompletedAB[Security_path] 
     // or pathwayCompletedAB[AI_path] or pathwayCompletedAB[Design_path] or pathwayCompletedAB[Theory_path]
+    //Response from Juan: this would be the same as using some instead of one as the quantifier for pathways 
 }
 
 pred fulfilledAB {
@@ -260,8 +265,9 @@ pred twoPathwaysDoneScB{
         pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
         (!pathwayCompletedScB[p3] and !pathwayCompletedScB[p4] and !pathwayCompletedScB[p5] and !pathwayCompletedScB[p6])
     } 
-        
 
+    //Proposed by Juan: (idk if this is faster but try running this and if it is we can keep it)
+    // some p1, p2 : PathWays | p1 != p2 and pathwayCompletedSCB[p1] and pathwayCompletedSCB[p2]
 }
 pred fulfilledScB {
     traces
@@ -270,8 +276,83 @@ pred fulfilledScB {
 }
 
 
-//run {fulfilledAB} for exactly 7 Semester
-run {fulfilledScB fulfilledAB} for exactly 7 Semester
+// run {fulfilledAB} for exactly 7 Semester
+// run {fulfilledScB fulfilledAB} for exactly 7 Semester
+
+pred satisfiesNewMathFoundation[c: Course] {
+    c in (CS0220 + APMA1650) // +   CS1450
+}
+
+pred satisfiesNewAlgoFoundation[c: Course]{
+    c in (CS0500 + CS1010 + CS1550 + CS1570)
+}
+
+pred satisfiesNewAIMLFoundation[c: Course] {
+    c in (CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1951A)
+}
+
+pred fulfilledABNew {
+    //give a valid trace
+    traces 
+    //satisfy the intro sequence
+    introSat
+
+    some disj math, alg, ai, sys, uppL1, uppL2, el1, el2 : Course | {
+        //satisfy the math foundations
+        satisfiesNewMathFoundation[math]
+        //satisfy the algorithms/theory req 
+        satisfiesNewAlgoFoundation[alg]
+        //satisfy the AI/ML req
+        satisfiesNewAIMLFoundation[ai]
+        //satisfy the systems foundations 
+        sys in (CS0300 + CS0320 + CS0330)
+        //take two upper level courses not equal to the foundations courses
+        // uppL1 != uppL2 and uppL1 != math and uppL1 != alg and uppL1 != ai and uppL1 != sys
+        uppL1 in Registry.upperLevels
+        // uppL2 != math and uppL2 != alg and uppL2 != ai and uppL2 != sys 
+        uppL2 in Registry.upperLevels
+        //take two new electives 
+        el1 + el2 in (CS0320 + Registry.upperLevels + MATH0520)
+        //need to fulfill a capstone
+        //....
+        //....
+
+        (math + alg + ai + sys + uppL1 + uppL2 + el1 + el2) in Semester.courses
+    }
+}
+
+// run fulfilledABNew for exactly 7 Semester
+
+pred fulfilledSCBNew {
+    //need a valid trace
+    traces
+    //need to satisfy the intro sequence
+    introSat
+    //need to take math 100
+    MATH0100 in Semester.courses
+    some disj math, alg, ai, sys, uppL1, uppL2, uppL3, uppL4, uppL5, el1, el2, el3, el4: Course | {
+        //satisfy the math foundations
+        satisfiesNewMathFoundation[math]
+        //satisfy the algorithms/theory req 
+        satisfiesNewAlgoFoundation[alg]
+        //satisfy the AI/ML req
+        satisfiesNewAIMLFoundation[ai]
+        //satisfy the systems foundations 
+        sys in (CS0300 + CS0320 + CS0330)
+        //need 5 upperlevels 
+        (uppL1 + uppL2 + uppL3 + uppL4 + uppL5) in Registry.upperLevels
+        //need 4 electives
+        el1 + el2 + el3 + el4 in (CS0320 + Registry.upperLevels + MATH0520)
+         //need to fulfill a capstone
+        //....
+        //....
+
+        (math + alg + ai + sys + uppL1 + uppL2 + uppL3 + uppL4 + uppL5 + el1 + el2 + el3 + el4) in Semester.courses
+    }
+}
+
+// run fulfilledSCBNew for exactly 7 Semester
+
 /**
 *This predicate ensues that two courses don't overlap.
 **/
