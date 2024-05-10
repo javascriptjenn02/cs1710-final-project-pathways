@@ -12,7 +12,22 @@ open "scheduler.frg"
     - all courses should exist in A registry
 - CoursesInCorrectPathways/Level/HaveCorrectPrereqs
     - idk how you test this... all we're doing is hardcoding the set 
-- 
+- Semesters Linear 
+    - course should not be it's own next
+    - there is only one semester that has no prev
+    - there is only one semeter that has no next
+    - for every semester with a next field, the next semester has to have that semester as its prev
+    - for every semester with a prev field, the prev semester has to have that semester as its next
+    - no semester should reach itself
+    - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
+- Semester Course Load Valid
+    - sizes 0, 1, 2, 5 are unsat
+- Semesters Respect PreReqs
+    - it's impossible to take cs200 without taking any of the prereqs
+    - test a course with multiple prereqs (maybe ML?)
+- Semesters Courses One Time
+    - it's impossible for a course to appear more than once in a study plan
+    
 
     
 // pred timeCheck {
