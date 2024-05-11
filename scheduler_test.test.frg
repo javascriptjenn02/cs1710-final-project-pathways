@@ -1,6 +1,6 @@
 #lang forge
-
 open "scheduler.frg"
+option verbose 2
 
  pred notInPreReqs {
     all s : Semester {
@@ -54,6 +54,71 @@ test suite for fulfilledScB {
 
 }
 
+
+
+//====================================
+//====Semesters Linear ===============
+//====================================
+
+pred noSemesterIsItsOwnNext {
+    all s : Semester {
+        s.next != s 
+        s.prev != s
+    }
+}
+
+pred canReachAllOthers[s: Semester] {
+    some s.next 
+    all otherS: Semester | s != otherS implies { reachable[otherS, s, next] }
+}
+
+pred canReachAllOthersBackwards[s: Semester] {
+    some s.prev
+    all otherS: Semester |s != otherS implies { reachable[otherS, s, prev]}
+}
+pred oneSemesterIsTheHead {
+    #{s : Semester | no s.prev} = 1
+    #{s: Semester | canReachAllOthers[s]} = 1
+}
+pred oneSemesterIsTheTail {
+    #{s : Semester | no s.next} = 1
+    #{s: Semester | canReachAllOthersBackwards[s]} = 1 
+}
+
+pred allSemestersNextIsPrev {
+    all s : Semester | some s.next implies s.next.prev = s
+}
+
+pred allSemestersPrevIsNext {
+    all s : Semester | some s.prev implies s.prev.next = s
+}
+
+pred noSemesterIsReachableFromSelf {
+    all s : Semester | some s.next implies not reachable[s, s, next] and some s.prev implies not reachable[s, s, prev]
+}
+
+pred transposeOfNextIsPrev {
+    prev = ~next
+}
+
+
+test suite for semestersLinear {
+// - Semesters Linear 
+    // - course should not be it's own next
+    assert noSemesterIsItsOwnNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - there is only one semester that has no prev
+    assert oneSemesterIsTheHead is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - there is only one semeter that has no next
+    assert oneSemesterIsTheTail is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - for every semester with a next field, the next semester has to have that semester as its prev
+    assert allSemestersNextIsPrev is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - for every semester with a prev field, the prev semester has to have that semester as its next
+    assert allSemestersPrevIsNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - no semester should reach itself
+    assert noSemesterIsReachableFromSelf is necessary for semestersLinear for exactly 7 Semester, 6 Int
+//     - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
+    assert transposeOfNextIsPrev is sufficient for semestersLinear for exactly 7 Semester, 6 Int
+}
 
 
 

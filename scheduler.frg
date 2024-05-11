@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-//option solver MiniSatProver
+option solver MiniSatProver
 -- FOR MAC
-  option solver Glucose
+//   option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -160,6 +160,7 @@ pred semestersLinear {
     #{s: Semester | s.prev = none} = 1
     #{s: Semester | s.next = none} = 1
     all s : Semester {
+        some s.next or some s.prev
         some s.next implies {
             s.next != s   
             s.next.prev = s   
