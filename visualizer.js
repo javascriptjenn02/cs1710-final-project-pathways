@@ -9,6 +9,7 @@ console.log(course_field[0].atoms()[0].id()) //THIS GETS THE SEMESTER
 
 // ---------------------------------- INSTANCE FUNCTIONS ---------------------------------- //
 let course_list = {}
+//populates dictionary mapping semester to courses
 function populateSemCourses(sem_course_tuple) {
 
     for(let i = 0; i < sem_course_tuple.length; i++){
@@ -26,6 +27,7 @@ function populateSemCourses(sem_course_tuple) {
     //return Object.keys(course_list)
 }
 
+//Creates semester grid
 function addCourseGrid(semester, grid){
     c = course_list[semester]
     for(i = 0; i < c.length; i++){
