@@ -1,7 +1,7 @@
 #lang forge
 
 -- FOR WINDOWS
-option solver MiniSatProver
+//option solver MiniSatProver
 -- FOR MAC
 // option solver Glucose
 
@@ -56,6 +56,18 @@ one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, 
   APMA1650, 
   MATH0520, 
   MATH0100, MATH0180 extends Course {}
+
+inst sig_binds {
+    Semester = `Semester0 + `Semester1 + `Semester2 + `Semester3 + `Semester4 + `Semester5 + `Semester6
+    //next = `Semester0 -> `Semester1 + `Semester1 -> `Semester2 + `Semester2 -> `Semester3 + `Semester3 -> `Semester4 + `Semester4 -> `Semester5 + `Semester5 -> `Semester6
+    `Semester0.next = `Semester1
+    `Semester1.next = `Semester2
+    `Semester2.next = `Semester3
+    `Semester3.next = `Semester4
+    `Semester4.next = `Semester5
+    `Semester5.next = `Semester6
+    no `Semester6.next
+}
 
 pred coursesInCorrectRegistrars {
     Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1280 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X  + CS1953A + APMA1650 + MATH0100 + MATH0520 + MATH0180 + CS1230}
@@ -425,4 +437,6 @@ pred fulfilledSCBNew {
     }
 }
 
-run {fulfilledABNew fulfilledAB} for exactly 7 Semester, 6 Int
+//run {fulfilledABNew fulfilledAB} for exactly 7 Semester, 6 Int
+run {fulfilledABNew fulfilledAB} for exactly 6 Int  for {sig_binds} 
+
