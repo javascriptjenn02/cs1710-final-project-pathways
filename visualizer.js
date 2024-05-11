@@ -44,10 +44,10 @@ populateSemCourses(course_field)
 // stage.add(box)
 
 const box = new ImageBox({
-    coords: {x:100,y:100}, 
-    url: "https://raw.githubusercontent.com/javascriptjenn02/cs1710-final-project-pathways/6f7d3bd1509f73f34550cbc058f9013e801d2a54/title.svg", 
-    width:200, 
-    height:200})
+    coords: {x:350,y:100}, 
+    url: "https://github.com/javascriptjenn02/cs1710-final-project-pathways/blob/main/graphic.png?raw=true", 
+    width:500, 
+    height:500})
 stage.add(box)
 
 const title = new TextBox({
@@ -127,5 +127,5 @@ addCourseGrid("Semester4", grid4)
 addCourseGrid("Semester5", grid5)
 addCourseGrid("Semester6", grid6)
 
-stage.add(title)
+
 stage.render(svg, document)
