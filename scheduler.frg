@@ -139,6 +139,7 @@ pred coursesHaveCorrectPreReqs {
     CS1820.prereqs = {(0 -> CS1810)}
     CS1950U.prereqs = {(0 -> CS0320) + (0 -> CS0300) + (0 -> CS0330) + (1 -> CS1230)}
     CS1951A.prereqs = {(0 -> CS0200) + (0 -> CS0190)}
+    CS1951L.prereqs = {(0 -> CS0320) + (0 -> CS0300) + (0 -> CS0330)}
     CS1951Z.prereqs = {(0 -> CS1420)}
     CS1952Q.prereqs = {(0 -> CS0200) + (0 -> CS0190) + (1 -> APMA1650) + (2 -> MATH0520)}
     CS1952Y.prereqs = {(0 -> CS0300) + (0 -> CS0330) + (0 -> CS1310)} 
