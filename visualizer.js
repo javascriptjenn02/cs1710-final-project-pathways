@@ -110,6 +110,25 @@ let grid6 = new Grid({
 grid6.add({x: 0, y: 0}, new TextBox({text: "Semester 6", fontSize: 15, color: '#006699'}))
 
 
+// ---------------------------------- PATHWAYS ---------------------------------- //
+
+let x = 135
+let y = 600
+const pathway = instance.skolems().filter(s => s.toString().includes("path")).map(path => {
+    stage.add(new TextBox({
+    text: path.id().includes("p_") ? "AB Pathway: " + path.toString().split("_")[0] : "ScB Pathway: " + path.toString().split("_")[0], 
+    // text: path.atoms(),
+    coords: {x:x, y:y},
+    color: 'black',
+    fontSize: 15
+
+
+    }))
+    x = x + 180
+})
+
+
+
 stage.add(grid0)
 stage.add(grid1)
 stage.add(grid2)

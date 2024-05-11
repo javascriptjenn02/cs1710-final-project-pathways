@@ -445,7 +445,7 @@ pred fulfilledSCBNew {
 // # old ScB
 // run {fulfilledScB} for exactly 6 Int  for {sig_binds} 
 // # old ScB and old AB
-// run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
+//run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
 // # new ScB
 // run {fulfilledScBNew} for exactly 6 Int  for {sig_binds} 
 // # new ScB and old ScB
