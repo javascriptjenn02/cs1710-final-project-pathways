@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-//option solver MiniSatProver
+option solver MiniSatProver
 -- FOR MAC
-option solver Glucose
+// option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -185,6 +185,12 @@ pred semestersLinear {
     }
  }
 
+ pred semestersCourseLoadValidDemoVersion {
+    all s : Semester {
+        #{s.courses} = 2
+    }
+ }
+
  pred semestersRespectPreReqs {
     all s : Semester {
         all c : s.courses | {
@@ -231,7 +237,8 @@ pred traces {
     //we have to make the semester linear (think back to familyfact)
     {semestersLinear}
     //sems should have 3-5 courses
-    {semestersCourseLoadValid}
+    // {semestersCourseLoadValid}
+    {semestersCourseLoadValidDemoVersion}
     //prereqs need to be satisfied before having a class
     {semestersRespectPreReqs}
     //can only take a course once
@@ -248,6 +255,15 @@ pred traces {
 //intro seq set should be cs19 and cs200 since pre-reqs require 15, 17, etc. 
 pred introSat {
     CS0200 in Semester.courses or CS0190 in Semester.courses
+}
+
+pred introSatDemoVersion {
+    CS0200 in Semester.courses or CS0190 in Semester.courses
+    not CS0200 in Semester.courses and CS0190 in Semester.courses
+
+    CS0200 in Semester.courses implies 
+        #{Semester.courses & {CS0112 + CS0150 + CS0170}} = 1 else 
+        #{Semester.courses & {CS0111 + CS0112 + CS0150 + CS0170}} = 0
 }
 
 
@@ -285,7 +301,8 @@ pred onePathwayDoneAB {
 
 pred fulfilledAB {
     traces
-    introSat
+    // introSat
+    introSatDemoVersion
     onePathwayDoneAB
 }
 
@@ -325,13 +342,14 @@ pred twoPathwaysDoneScB{
 }
 pred fulfilledScB {
     traces
-    introSat
+    // introSat
+    introSatDemoVersion
     twoPathwaysDoneScB
 }
 
 
 //run {fulfilledAB} for exactly 7 Semester, 6 Int
- run {fulfilledScB fulfilledAB} for exactly 7 Semester, 6 Int
+//  run {fulfilledScB fulfilledAB} for exactly 7 Semester, 6 Int
 
 pred satisfiesNewMathFoundation[c: Course] {
     c in (CS0220 + APMA1650) // +   CS1450
@@ -349,7 +367,8 @@ pred fulfilledABNew {
     //give a valid trace
     traces 
     //satisfy the intro sequence
-    introSat
+    // introSat
+    introSatDemoVersion
 
     some disj math, alg, ai, sys, uppL1, uppL2, el1, el2 : Course | {
         //satisfy the math foundations
@@ -381,7 +400,8 @@ pred fulfilledSCBNew {
     //need a valid trace
     traces
     //need to satisfy the intro sequence
-    introSat
+    // introSat
+    introSatDemoVersion
     //need to take math 100
     MATH0100 in Semester.courses
     some disj math, alg, ai, sys, uppL1, uppL2, uppL3, uppL4, uppL5, el1, el2, el3, el4: Course | {
@@ -404,3 +424,5 @@ pred fulfilledSCBNew {
         (math + alg + ai + sys + uppL1 + uppL2 + uppL3 + uppL4 + uppL5 + el1 + el2 + el3 + el4) in Semester.courses
     }
 }
+
+run {fulfilledABNew fulfilledAB} for exactly 7 Semester, 6 Int
