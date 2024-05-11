@@ -3,7 +3,7 @@
 -- FOR WINDOWS
 //option solver MiniSatProver
 -- FOR MAC
-// option solver Glucose
+option solver Glucose
 option run_sterling "visualizer.js"
 
 /**
@@ -112,9 +112,31 @@ pred coursesInCorrectPathway {
 }
 
 pred coursesHaveCorrectPreReqs {
-    //CS0111.prereqs + CS0150.prereqs + CS0170.prereqs + CS0190.prereqs + CS0220.prereqs + CS1250.prereqs + CS0500.prereqs + CS1040.prereqs + CS1310.prereqs + CS1360.prereqs + CS1460.prereqs + CS1800.prereqs +  CS1805.prereqs + CS1860.prereqs + CS1870.prereqs + CS1953A.prereqs + CS1951L.prereqs + CS1952B.prereqs + CS1952Z.prereqs = {}
+    // not some {CS0111.prereqs + CS0150.prereqs + CS0170.prereqs + CS0190.prereqs + CS0220.prereqs + CS1250.prereqs + CS0500.prereqs + CS1040.prereqs + CS1310.prereqs + CS1360.prereqs + CS1460.prereqs + CS1800.prereqs +  CS1805.prereqs + CS1860.prereqs + CS1870.prereqs + CS1953A.prereqs + CS1951L.prereqs + CS1952B.prereqs + CS1952Z.prereqs}
+    no CS0111.prereqs
+    no CS0150.prereqs
+    no CS0170.prereqs
+    no CS0190.prereqs
+    no CS0220.prereqs
+    no CS1250.prereqs
+    no CS1040.prereqs
+    no CS1310.prereqs
+    no CS1360.prereqs
+    no CS1460.prereqs
+    no CS1800.prereqs
+    no CS1805.prereqs
+    no CS1860.prereqs
+    no CS1870.prereqs
+    no CS1953A.prereqs
+    no CS1952B.prereqs
+    no CS1952Z.prereqs
+    no MATH0520.prereqs
+    no APMA1650.prereqs
+    no MATH0100.prereqs
+
+    
     CS0112.prereqs = {(0 -> CS0111)}
-    CS0200.prereqs = {(0 -> CS0150) + (0 -> CS0112) + (0-> CS0170)}
+    CS0200.prereqs = {(0 -> CS0150) + (0 -> CS0112) + (0-> CS0170) + (0 -> CS0111)}
     CS0320.prereqs = {(0 -> CS0200) + (0 -> CS0190)}
     CS0330.prereqs = {(0 -> CS0200) + (0 -> CS0190)}
     CS1010.prereqs = {(0 -> CS0220) + (0 -> CS1550) + (0 -> APMA1650) + (0 -> CS1570)}
@@ -320,23 +342,10 @@ pred fulfilledAB {
 }
 
 pred pathwayCompletedScB[p: PathWays] {
-    //there is one foundations intermediate
-    //there is one math intermediate
-    //there is one systems intermediate
-    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
-    //The probability courses are missing, maybe take out the honors courses (540 and 1655) because you can only take one
-    #{c : Course | c in Semester.courses and c in Registry.mathInter} = 1
-    //ACTUALLY only one systems course can be counted towards concentration so change this to one perhaps
-    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
-    #{c : Course | (c in (Semester.courses & (Registry.foundationsInter +  Registry.mathInter + Registry.systemsInter))) } >= 5
-
-    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 2 or (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
+    #{c : Course | (c in Semester.courses) and (c in p.core)} >= 1 and (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
    // #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} = 1
     //#{c : Course | (c in Semester.courses) and (c in Registry.upperLevels - (Semester.courses & p.core & p.related))} >= 3
     //AHHHH AM I OVER CONSTRAINING?? elective courses can be in pathway as long as there is at least one upperlevel course that is unrelated 
-    #{c : Course | (c in Registry.upperLevels) and (c in (Semester.courses - (p.core + p.related)))} >=3
-
-
     //say that there's some pathway P |
         //the union of p.core and courses is > 0
         //{the union of p.core and Semester.courses + the union of p.related and Semester.courses} >= 2
@@ -349,9 +358,30 @@ pred twoPathwaysDoneScB{
     //     pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
     //     (!pathwayCompletedScB[p3] and !pathwayCompletedScB[p4] and !pathwayCompletedScB[p5] and !pathwayCompletedScB[p6])
     // } 
+       //there is one foundations intermediate
+    //there is one math intermediate
+    //there is one systems intermediate
+    #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
+    //The probability courses are missing, maybe take out the honors courses (540 and 1655) because you can only take one
+    #{c : Course | c in Semester.courses and c in Registry.mathInter} = 1
+    //ACTUALLY only one systems course can be counted towards concentration so change this to one perhaps
+    #{c : Course | c in Semester.courses and c in Registry.systemsInter} >= 1
+    #{c : Course | (c in (Semester.courses & (Registry.foundationsInter +  Registry.mathInter + Registry.systemsInter))) } >= 5
 
     //Proposed by Juan: (idk if this is faster but try running this and if it is we can keep it)
-     some p1, p2 : PathWays | p1 != p2 and pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
+    //  some p1, p2 : PathWays | p1 != p2 and pathwayCompletedScB[p1] and pathwayCompletedScB[p2] and #{Registry.upperLevels & (Semester.courses - (p1.core + p1.related + p2.core + p2.related))} >= 1 and 
+
+    some disj p1, p2 : PathWays | some disj core1, coreOrRelated1, core2, coreOrRelated2, unRelated, elec1, elec2, elec3: Course | {
+        core1 in p1.core
+        core2 in p2.core
+        coreOrRelated1 in (p1.core + p1.related)
+        coreOrRelated2 in (p2.core + p2.related)
+        unRelated not in (p1.core + p2.core + p1.related + p2.related)
+        unRelated in Registry.upperLevels
+        (elec1 + elec2 + elec3) in Registry.upperLevels
+        core1 + coreOrRelated1 + core2 + coreOrRelated2 + unRelated + elec1 + elec2 + elec3 in Semester.courses
+    }
+
 }
 pred fulfilledScB {
     traces
@@ -409,7 +439,7 @@ pred fulfilledABNew {
 
 // run fulfilledABNew for exactly 7 Semester
 
-pred fulfilledSCBNew {
+pred fulfilledScBNew {
     //need a valid trace
     traces
     //need to satisfy the intro sequence
@@ -445,11 +475,13 @@ pred fulfilledSCBNew {
 // # old ScB
 // run {fulfilledScB} for exactly 6 Int  for {sig_binds} 
 // # old ScB and old AB
-//run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
+run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
 // # new ScB
 // run {fulfilledScBNew} for exactly 6 Int  for {sig_binds} 
 // # new ScB and old ScB
 // run {fulfilledScBNew fulfilledScB} for exactly 6 Int  for {sig_binds} 
 // # new AB and old AB 
-run {fulfilledABNew fulfilledAB} for exactly 6 Int  for {sig_binds} 
+//run {fulfilledABNew fulfilledAB} for exactly 6 Int  for {sig_binds} 
+
+//run {fulfilledABNew fulfilledScBNew} for exactly 6 Int  for {sig_binds} 
 

@@ -1,6 +1,6 @@
 # CS1710 Final Project: Pathways README
 
-## Juan Garcia (jgarci17) and Jennifer Tran (jtran43)
+## Juan Garcia (jgarci71) and Jennifer Tran (jtran43)
 
 ## Project Objective
 
@@ -136,7 +136,7 @@ We had tests for the following plan:
   - sizes 0, 1, 5 are unsat
 - Semesters Respect PreReqs
   - it's impossible to take cs200 without taking any of the prereqs
-  - test a course with multiple prereqs (maybe ML)
+  - test a course with multiple prereqs is sat
 - Semesters Courses One Time
   - it's impossible for a course to appear more than once in a study plan
 
