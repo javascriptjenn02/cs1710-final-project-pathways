@@ -2,31 +2,88 @@
 
 open "scheduler.frg"
 
+ pred notInPreReqs {
+    all s : Semester {
+        all c : s.courses | {
+            c not in (c.prereqs).Course
+            // all req : c.prereqs | some prevS: Semester | reachable[prevS, s, prev] and req in prevS.courses 
+        }
+    }
+ }
 
-/* Test Cases
-- Courses wellformedness
-    - a course should not be it's own pre-req
-    - we should not be able to get an instance where courses with no pre-reqs have pre-reqs
-    - all courses must be one of the sig courses we defined (e.g. all c : Course | c in CS0150 or CS0111 or CS0200 or....)
-- CoursesInCorrectRegistry
-    - all courses should exist in A registry
-- CoursesInCorrectPathways/Level/HaveCorrectPrereqs
-    - idk how you test this... all we're doing is hardcoding the set 
-- Semesters Linear 
-    - course should not be it's own next
-    - there is only one semester that has no prev
-    - there is only one semeter that has no next
-    - for every semester with a next field, the next semester has to have that semester as its prev
-    - for every semester with a prev field, the prev semester has to have that semester as its next
-    - no semester should reach itself
-    - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
-- Semester Course Load Valid
-    - sizes 0, 1, 2, 5 are unsat
-- Semesters Respect PreReqs
-    - it's impossible to take cs200 without taking any of the prereqs
-    - test a course with multiple prereqs (maybe ML?)
-- Semesters Courses One Time
-    - it's impossible for a course to appear more than once in a study plan
+  pred notInPrereqs {
+    some c : Course {
+        #((c.prereqs)) = 0
+    }
+}
+ 
+
+pred nonEmptyRegistry {
+    all r : Registry {
+        #{r.fallRegistry} > 0
+        #{r.springRegistry} > 0
+    }
+}
+
+pred courseinRegistry {
+    all c : Course {
+        c in Registry.fallRegistry or c in Registry.springRegistry or (c in (Registry.fallRegistry + Registry.springRegistry))
+    }
+}
+
+pred noDuplicates {
+    all disj s1, s2 : Semester {
+        all c : Course {
+            c not in (s1.courses & s2.courses)
+        }
+    }
+}
+
+test suite for fulfilledAB {
+    // assert all s: Semester | notInPreReqs is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+    // assert all c: Course | courseinRegistry is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+    //test expect {courseNoPrereq : {some c : Course | {notInPrereqs}} is sat}
+    assert all c: Course | noDuplicates is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+
+}
+
+test suite for fulfilledScB {
+    // assert all s: Semester | notInPreReqs is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+    // assert all c: Course | courseinRegistry is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+    assert all c: Course | noDuplicates is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+
+}
+
+
+
+
+
+
+
+// /* Test Cases
+// - Courses wellformedness
+//     - a course should not be it's own pre-req
+//     - we should not be able to get an instance where courses with no pre-reqs have pre-reqs
+//     - all courses must be one of the sig courses we defined (e.g. all c : Course | c in CS0150 or CS0111 or CS0200 or....)
+// - CoursesInCorrectRegistry
+//     - all courses should exist in A registry
+// - CoursesInCorrectPathways/Level/HaveCorrectPrereqs
+//     - idk how you test this... all we're doing is hardcoding the set 
+// - Semesters Linear 
+//     - course should not be it's own next
+//     - there is only one semester that has no prev
+//     - there is only one semeter that has no next
+//     - for every semester with a next field, the next semester has to have that semester as its prev
+//     - for every semester with a prev field, the prev semester has to have that semester as its next
+//     - no semester should reach itself
+//     - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
+// - Semester Course Load Valid
+//     - sizes 0, 1, 2, 5 are unsat
+// - Semesters Respect PreReqs
+//     - it's impossible to take cs200 without taking any of the prereqs
+//     - test a course with multiple prereqs (maybe ML)
+// - Semesters Courses One Time
+//     - it's impossible for a course to appear more than once in a study plan
     
 
     
