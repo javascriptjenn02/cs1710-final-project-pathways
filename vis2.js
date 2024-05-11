@@ -72,51 +72,20 @@ let grid2 = new Grid({
 })
 grid2.add({x: 0, y: 0}, new TextBox({text: "Semester 2", fontSize: 12, color: ''}))
 
-let grid3 = new Grid({
-    grid_location: {x: 380, y:200},
-    cell_size: {x_size: 100, y_size: 30},
-    grid_dimensions: {x_size: 1, y_size: 6}
-})
-grid3.add({x: 0, y: 0}, new TextBox({text: "Semester 3", fontSize: 12, color: ''}))
 
-
-let grid4 = new Grid({
-    grid_location: {x: 480, y:200},
-    cell_size: {x_size: 100, y_size: 30},
-    grid_dimensions: {x_size: 1, y_size: 6}
-})
-grid4.add({x: 0, y: 0}, new TextBox({text: "Semester 4", fontSize: 12, color: ''}))
-
-let grid5 = new Grid({
-    grid_location: {x: 580, y:200},
-    cell_size: {x_size: 100, y_size: 30},
-    grid_dimensions: {x_size: 1, y_size: 6}
-})
-grid5.add({x: 0, y: 0}, new TextBox({text: "Semester 5", fontSize: 12, color: ''}))
-
-let grid6 = new Grid({
-    grid_location: {x: 580, y:200},
-    cell_size: {x_size: 100, y_size: 30},
-    grid_dimensions: {x_size: 1, y_size: 6}
-})
-grid6.add({x: 0, y: 0}, new TextBox({text: "Semester 6", fontSize: 12, color: ''}))
 
 // stage.add(grid)
 // stage.add(grid2)
 
-stage.add(grid0)
-stage.add(grid1)
-stage.add(grid2)
-stage.add(grid3)
-stage.add(grid4)
-stage.add(grid5)
-stage.add(grid6)
 
 addCourseGrid("Semester0", grid0)
 addCourseGrid("Semester1", grid1)
 addCourseGrid("Semester2", grid2)
-addCourseGrid("Semester3", grid3)
-addCourseGrid("Semester4", grid4)
-addCourseGrid("Semester5", grid5)
-addCourseGrid("Semester6", grid6)
 
+stage.add(new TextBox({
+  text: course_list["Semester6"], 
+  coords: {x:200, y:500},
+  color: 'black',
+  fontSize: 8}))
+stage.add(title)
+stage.render(svg, document)
