@@ -54,7 +54,7 @@ let grid0 = new Grid({
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid0.add({x: 0, y: 0}, new TextBox({text: "Semester 0", fontSize: 12, color: ''}))
+grid0.add({x: 0, y: 0}, new TextBox({text: "Semester 0", fontSize: 15, color: '#006699'}))
 
 
 let grid1 = new Grid({
@@ -62,7 +62,7 @@ let grid1 = new Grid({
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid1.add({x: 0, y: 0}, new TextBox({text: "Semester 1", fontSize: 12, color: ''}))
+grid1.add({x: 0, y: 0}, new TextBox({text: "Semester 1", fontSize: 15, color: '#006699'}))
 
 
 let grid2 = new Grid({
@@ -70,39 +70,36 @@ let grid2 = new Grid({
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid2.add({x: 0, y: 0}, new TextBox({text: "Semester 2", fontSize: 12, color: ''}))
+grid2.add({x: 0, y: 0}, new TextBox({text: "Semester 2", fontSize: 15, color: '#006699'}))
 
 let grid3 = new Grid({
     grid_location: {x: 380, y:200},
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid3.add({x: 0, y: 0}, new TextBox({text: "Semester 3", fontSize: 12, color: ''}))
-
+grid3.add({x: 0, y: 0}, new TextBox({text: "Semester 3", fontSize: 15, color: '#006699'}))
 
 let grid4 = new Grid({
     grid_location: {x: 480, y:200},
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid4.add({x: 0, y: 0}, new TextBox({text: "Semester 4", fontSize: 12, color: ''}))
+grid4.add({x: 0, y: 0}, new TextBox({text: "Semester 4", fontSize: 15, color: '#006699'}))
 
 let grid5 = new Grid({
-    grid_location: {x: 580, y:200},
+    grid_location: {x: 80, y:400},
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid5.add({x: 0, y: 0}, new TextBox({text: "Semester 5", fontSize: 12, color: ''}))
+grid5.add({x: 0, y: 0}, new TextBox({text: "Semester 5", fontSize: 15, color: '#006699'}))
 
 let grid6 = new Grid({
-    grid_location: {x: 580, y:200},
+    grid_location: {x: 180, y:400},
     cell_size: {x_size: 100, y_size: 30},
     grid_dimensions: {x_size: 1, y_size: 6}
 })
-grid6.add({x: 0, y: 0}, new TextBox({text: "Semester 6", fontSize: 12, color: ''}))
+grid6.add({x: 0, y: 0}, new TextBox({text: "Semester 6", fontSize: 15, color: '#006699'}))
 
-// stage.add(grid)
-// stage.add(grid2)
 
 stage.add(grid0)
 stage.add(grid1)
@@ -112,6 +109,7 @@ stage.add(grid4)
 stage.add(grid5)
 stage.add(grid6)
 
+
 addCourseGrid("Semester0", grid0)
 addCourseGrid("Semester1", grid1)
 addCourseGrid("Semester2", grid2)
@@ -120,3 +118,5 @@ addCourseGrid("Semester4", grid4)
 addCourseGrid("Semester5", grid5)
 addCourseGrid("Semester6", grid6)
 
+stage.add(title)
+stage.render(svg, document)

@@ -4,6 +4,7 @@
 //option solver MiniSatProver
 -- FOR MAC
 // option solver Glucose
+option run_sterling "visualizer.js"
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -249,7 +250,7 @@ pred traces {
     //we have to make the semester linear (think back to familyfact)
     {semestersLinear}
     //sems should have 3-5 courses
-    // {semestersCourseLoadValid}
+    //{semestersCourseLoadValid}
     {semestersCourseLoadValidDemoVersion}
     //prereqs need to be satisfied before having a class
     {semestersRespectPreReqs}
