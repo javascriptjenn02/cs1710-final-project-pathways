@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-option solver MiniSatProver
+//option solver MiniSatProver
 -- FOR MAC
-//   option solver Glucose
+option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs

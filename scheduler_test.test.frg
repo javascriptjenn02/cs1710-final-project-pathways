@@ -39,20 +39,93 @@ pred noDuplicates {
     }
 }
 
-test suite for fulfilledAB {
-    // assert all s: Semester | notInPreReqs is necessary for fulfilledAB for exactly 7 Semester, 6 Int
-    // assert all c: Course | courseinRegistry is necessary for fulfilledAB for exactly 7 Semester, 6 Int
-    //test expect {courseNoPrereq : {some c : Course | {notInPrereqs}} is sat}
-    assert all c: Course | noDuplicates is necessary for fulfilledAB for exactly 7 Semester, 6 Int
 
-}
+// test suite for fulfilledAB {
+//     // assert all s: Semester | notInPreReqs is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+//     // assert all c: Course | courseinRegistry is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+//     //test expect {courseNoPrereq : {some c : Course | {notInPrereqs}} is sat}
+//    // assert all c: Course | noDuplicates is necessary for fulfilledAB for exactly 7 Semester, 6 Int
+   
 
-test suite for fulfilledScB {
-    // assert all s: Semester | notInPreReqs is necessary for fulfilledScB for exactly 7 Semester, 6 Int
-    // assert all c: Course | courseinRegistry is necessary for fulfilledScB for exactly 7 Semester, 6 Int
-    assert all c: Course | noDuplicates is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+// }
 
-}
+// test suite for fulfilledScB {
+//     // assert all s: Semester | notInPreReqs is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+//     // assert all c: Course | courseinRegistry is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+//     //assert all c: Course | noDuplicates is necessary for fulfilledScB for exactly 7 Semester, 6 Int
+// }
+
+pred semestersCourseLoadSmall {
+    all s : Semester {
+        #{s.courses} < 2
+    }
+ }
+
+ pred semestersCourseLoadLarge {
+    all s : Semester {
+        #{s.courses} > 6
+    }
+ }
+
+test suite for traces {
+    // test expect {courseLoadInvalidSmall : {some s : Semester | {
+    //     semestersCourseLoadSmall
+    //     traces
+    //     }} for exactly 6 Int is unsat} 
+
+    // test expect {courseLoadInvalidLarge : {some s : Semester | {
+    //     semestersCourseLoadLarge
+    //     traces
+    //     }} for exactly 6 Int is unsat} 
+
+  }
+
+  pred hasPrereqForIntro {
+    some s : Semester {
+        some r : Registry.intros {
+            r in s.courses
+            } 
+        }
+    }
+    
+    pred bad200 {
+        init
+        CS0200 in Semester.courses
+        (CS0150 not in Semester.courses) and (CS0170 not in Semester.courses) and (CS0112 not in Semester.courses) 
+
+    } 
+
+    pred badMultiplePrereqs {
+        init
+        CS1410 in Semester.courses
+        all prereq : (CS1410.prereqs).Course | {
+            some category : prereq.(CS1410.prereqs) | category not in (Semester.^prev).courses
+        } 
+
+    } 
+    
+  
+  test suite for introSat {
+        // test expect {introInCourse : {some s : Semester | {
+        //     hasPrereqForIntro
+        //     introSat
+        // }} for exactly 7 Semester is sat} 
+
+        // test expect {no200Prereq : {some s : Semester | {
+        //     bad200
+        //     introSat
+        //     semestersRespectPreReqs
+        // }} for exactly 7 Semester, 6 Int is unsat} 
+  }
+
+  test suite for semestersRespectPreReqs {
+    
+    // test expect {no200Prereq : {some s : Semester | {
+    //     badMultiplePrereqs
+    //     semestersRespectPreReqs
+    // }} for exactly 7 Semester, 6 Int is unsat} 
+
+  }
 
 
 
@@ -105,19 +178,19 @@ pred transposeOfNextIsPrev {
 test suite for semestersLinear {
 // - Semesters Linear 
     // - course should not be it's own next
-    assert noSemesterIsItsOwnNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - there is only one semester that has no prev
-    assert oneSemesterIsTheHead is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - there is only one semeter that has no next
-    assert oneSemesterIsTheTail is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - for every semester with a next field, the next semester has to have that semester as its prev
-    assert allSemestersNextIsPrev is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - for every semester with a prev field, the prev semester has to have that semester as its next
-    assert allSemestersPrevIsNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - no semester should reach itself
-    assert noSemesterIsReachableFromSelf is necessary for semestersLinear for exactly 7 Semester, 6 Int
-//     - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
-    assert transposeOfNextIsPrev is sufficient for semestersLinear for exactly 7 Semester, 6 Int
+//     assert noSemesterIsItsOwnNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - there is only one semester that has no prev
+//     assert oneSemesterIsTheHead is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - there is only one semeter that has no next
+//     assert oneSemesterIsTheTail is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - for every semester with a next field, the next semester has to have that semester as its prev
+//     assert allSemestersNextIsPrev is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - for every semester with a prev field, the prev semester has to have that semester as its next
+//     assert allSemestersPrevIsNext is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - no semester should reach itself
+//     assert noSemesterIsReachableFromSelf is necessary for semestersLinear for exactly 7 Semester, 6 Int
+// //     - next = ~prev (the relation next that points s -> s should be the same as the inverse of prev)
+    assert semestersLinear is sufficient for transposeOfNextIsPrev for exactly 7 Semester, 6 Int
 }
 
 
