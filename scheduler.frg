@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-//option solver MiniSatProver
+// option solver MiniSatProver
 -- FOR MAC
-option solver Glucose
+// option solver Glucose
 option run_sterling "visualizer.js"
 
 /**
@@ -30,6 +30,9 @@ abstract sig Semester {
 sig FallSemester extends Semester {}
 sig SpringSemester extends Semester {}
 
+/**
+* This is the Registry. It holds different buckets for courses. 
+*/
 one sig Registry {
     fallRegistry: set Course, 
     springRegistry: set Course, 
@@ -40,13 +43,16 @@ one sig Registry {
     systemsInter: set Course
 }
 
-
+/*
+* This represents a PathWay's requirements. 
+*/
 abstract sig PathWays {
     core: set Course, 
     related: set Course,
     intermediate: set Course
 }
 
+//indiv pathways
 one sig Data_path, Visual_path, Security_path, AI_path, Design_path, Theory_path extends PathWays {}
 
 //OMITTING CS0020, TA APPRENTICESHIPS, AND LABS, THESE ARE ALL CS COURSES, WITH FALL CLASSES IN THE TOP ROW AND SPRING CLASSES IN THE BOTTOM ROW 
@@ -56,6 +62,9 @@ one sig CS0111, CS0112, CS0150, CS0170, CS0190, CS0200, CS0220, CS0320, CS0330, 
   MATH0520, 
   MATH0100, MATH0180 extends Course {}
 
+/**
+* forcing the order of semesters
+**/
 inst sig_binds {
     Semester = `Semester0 + `Semester1 + `Semester2 + `Semester3 + `Semester4 + `Semester5 + `Semester6
     //next = `Semester0 -> `Semester1 + `Semester1 -> `Semester2 + `Semester2 -> `Semester3 + `Semester3 -> `Semester4 + `Semester4 -> `Semester5 + `Semester5 -> `Semester6
@@ -68,11 +77,17 @@ inst sig_binds {
     no `Semester6.next
 }
 
+/**
+* places the courses in correct registrars (fall or spring)
+**/
 pred coursesInCorrectRegistrars {
     Registry.fallRegistry = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190 + CS0200 + CS0220 + CS0320 + CS0330 + CS1010 + CS1250 + CS1260 + CS1270 + CS1280 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X  + CS1953A + APMA1650 + MATH0100 + MATH0520 + MATH0180 + CS1230}
     Registry.springRegistry = {CS0111 + CS0200 + CS0220 + CS0320 + CS0300 + CS0500 + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820 + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q  + CS1952Y + CS1952Z + APMA1650 + MATH0100 + MATH0520 + MATH0180}
 }
 
+/**
+* This places the courses in the correct level (intro/inter/upper)
+**/
 pred coursesInCorrectLevel {
     Registry.intros = {CS0111 + CS0112 + CS0150 + CS0170 + CS0190}
     Registry.foundationsInter = {CS0220 + CS1010}
@@ -81,13 +96,15 @@ pred coursesInCorrectLevel {
     Registry.upperLevels = {CS1010 + CS1230 + CS1250 + CS1260 + CS1270 + CS1290 + CS1360 + CS1410 + CS1430 + CS1460 + CS1510 + CS1570 + CS1600 + CS1650 + CS1680 + CS1730 + CS1760 + CS1805 + CS1810 + CS1860 + CS1870 + CS1950N + CS1951X  + CS1953A + CS1040 + CS1300 + CS1310 +  CS1380 + CS1420 + CS1430 + CS1440 + CS1470 + CS1515 + CS1550 + CS1660 + CS1670 + CS1710 + CS1800 + CS1820  + CS1950U + CS1951A + CS1951L + CS1951Z + CS1952B + CS1952Q  + CS1952Y + CS1952Z}
 }
 
+/**
+* this places courses into their respective pathways
+**/
 pred coursesInCorrectPathway {
     Data_path.core = {CS1420 + CS1270 + CS1951A}
     Data_path.related = {CS1550}
     Data_path.intermediate = {APMA1650 + CS0320 + CS0300 + CS0330 + MATH0520}
 
     Visual_path.core = {CS1230 + CS1250 + CS1280 + CS1290 + CS1300 + CS1430}
-    //Pathways.visual = {CS1230}  should we add graphics and 1280
     Visual_path.related = {CS1470 + CS1950U + CS1950N}
     Visual_path.intermediate = {CS0300 + CS0320 + CS0330}
 
@@ -109,6 +126,9 @@ pred coursesInCorrectPathway {
 
 }
 
+/**
+* This hard codes the prereqs for all our courses. We need to define empty prereq set or else forge will populate it
+**/
 pred coursesHaveCorrectPreReqs {
     // not some {CS0111.prereqs + CS0150.prereqs + CS0170.prereqs + CS0190.prereqs + CS0220.prereqs + CS1250.prereqs + CS0500.prereqs + CS1040.prereqs + CS1310.prereqs + CS1360.prereqs + CS1460.prereqs + CS1800.prereqs +  CS1805.prereqs + CS1860.prereqs + CS1870.prereqs + CS1953A.prereqs + CS1951L.prereqs + CS1952B.prereqs + CS1952Z.prereqs}
     no CS0111.prereqs
@@ -178,7 +198,9 @@ pred coursesHaveCorrectPreReqs {
     CS1952Y.prereqs = {(0 -> CS0300) + (0 -> CS0330) + (0 -> CS1310)} 
 }
 
-
+/**
+* This initializes our model by placing courses into their correct categories/buckets
+**/
 pred init {
     // Place it in the correct semester registrar
     {coursesInCorrectRegistrars} 
@@ -190,6 +212,9 @@ pred init {
     {coursesHaveCorrectPreReqs}
 }
 
+/**
+* This forces semestersToBeLinear beyond the sigBounds
+**/
 pred semestersLinear {
     //defining one head and one tail
     //ideally, this is a property we could test but this is to enforce that we get an instance of next and prev
@@ -211,6 +236,9 @@ pred semestersLinear {
     //property to test to verify this is correct: ~next = prev
  }
 
+/**
+* This constrains courses to be 3-5
+**/
  pred semestersCourseLoadValid {
     all s : Semester {
         #{s.courses} > 2
@@ -218,12 +246,19 @@ pred semestersLinear {
     }
  }
 
+/**
+* this constrains courses to be 2
+**/
  pred semestersCourseLoadValidDemoVersion {
     all s : Semester {
         #{s.courses} = 2
     }
  }
 
+/**
+* this constrains courses to align themselves by pre-reqs, meaning that a course should not appear unless it has 
+* satisfied prereqs in a previous semester. 
+**/
  pred semestersRespectPreReqs {
     all s : Semester {
         all c : s.courses | {
@@ -235,7 +270,9 @@ pred semestersLinear {
     }
  }
  
-
+/**
+* This constrains courses from appearing in multiple semesters
+**/
  pred semestersCoursesOneTime {
     all c : Course | {
         //courses can only be taken 0 or 1 time
@@ -244,6 +281,9 @@ pred semestersLinear {
     // some {c: Course | some s1, s2 : Semester | s1 != s2 and c in s1.courses and c in s2.courses}
  }
 
+/**
+* This forces semesters to alternate between Fall and Spring
+**/
  pred semestersAlternate {
     all s : Semester | {
         s in FallSemester or s in SpringSemester
@@ -260,18 +300,25 @@ pred semestersLinear {
     }
  }
 
+/**
+* This forces fallsemesters to only take courses offered in the fall and vice versa for spring
+**/
  pred semestersTakeCorrectCourses {
     all s : Semester | {
         s in FallSemester implies s.courses in Registry.fallRegistry else s.courses in Registry.springRegistry
     }
  }
+
+/**
+* This predicate is used to initialize the model and create valid semester traces. 
+**/
 pred traces {
     {init}
     //we have to make the semester linear (think back to familyfact)
     {semestersLinear}
     //sems should have 3-5 courses
-    //{semestersCourseLoadValid}
-    {semestersCourseLoadValidDemoVersion}
+    {semestersCourseLoadValid}
+    // {semestersCourseLoadValidDemoVersion}
     //prereqs need to be satisfied before having a class
     {semestersRespectPreReqs}
     //can only take a course once
@@ -284,12 +331,16 @@ pred traces {
 
 // run traces for exactly 7 Semester, 6 Int
 
-//is this needed since all courses basically require intro course
-//intro seq set should be cs19 and cs200 since pre-reqs require 15, 17, etc. 
+/**
+* this predicate enforces the intro requirement to be satisfied. 
+**/
 pred introSat {
     CS0200 in Semester.courses or CS0190 in Semester.courses
 }
 
+/**
+* this predicate is a more fleshed out version of the intro requirement, preventing schedules from taking all the intros
+**/
 pred introSatDemoVersion {
     CS0200 in Semester.courses or CS0190 in Semester.courses
     not CS0200 in Semester.courses and CS0190 in Semester.courses
@@ -299,7 +350,9 @@ pred introSatDemoVersion {
         #{Semester.courses & {CS0111 + CS0112 + CS0150 + CS0170}} = 0
 }
 
-
+/**
+* This predicate is used to check that a pathway has been completed. 
+**/
 pred pathwayCompletedAB[p : PathWays] {
     //Note from Juan: i think this doesnt constrain that minimum one needs to come from core
     #{c : Course | (c in Semester.courses) and (c in p.core)} >= 1 and (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
@@ -312,6 +365,9 @@ pred pathwayCompletedAB[p : PathWays] {
         //there is some course extraUL | extraUL is in Semester.courses, not in p.core, not in p.related, and in upperLevels
     }
 
+/**
+* this is used to check that the AB requirements have been satisfied (beyond the intro req)
+**/
 pred onePathwayDoneAB {
     //there is one foundations intermediate
     //there is one math intermediate
@@ -332,6 +388,9 @@ pred onePathwayDoneAB {
     //Response from Juan: this would be the same as using some instead of one as the quantifier for pathways 
 }
 
+/**
+* This predicate will produce instances that satisfy the AB requirements. 
+**/
 pred fulfilledAB {
     traces
     // introSat
@@ -339,6 +398,9 @@ pred fulfilledAB {
     onePathwayDoneAB
 }
 
+/**
+* This predicate was used to find pathways that were completed under the ScB. It was helpful for use in the evaluator.
+**/
 pred pathwayCompletedScB[p: PathWays] {
     #{c : Course | (c in Semester.courses) and (c in p.core)} >= 1 and (#{c : Course | (c in Semester.courses) and (c in p.core + p.related)} >= 2)
    // #{c : Course | (c in Semester.courses) and (c in (Registry.upperLevels - (p.core + p.related)))} = 1
@@ -349,8 +411,12 @@ pred pathwayCompletedScB[p: PathWays] {
         //{the union of p.core and Semester.courses + the union of p.related and Semester.courses} >= 2
         //and 
         //there is some course extraUL | extraUL is in Semester.courses, not in p.core, not in p.related, and in upperLevels
-    }
+}
 
+
+/**
+* this predicate constrains the course plan to satisfy the ScB requirements (beyodn the intro reqs)
+**/
 pred twoPathwaysDoneScB{
     // one p1, p2, p3, p4, p5, p6 : PathWays {
     //     pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
@@ -381,6 +447,10 @@ pred twoPathwaysDoneScB{
     }
 
 }
+
+/**
+* Running this predicate will produce traces that satisfy the ScB Requirements under the old reqs
+**/
 pred fulfilledScB {
     traces
     //introSat
@@ -391,19 +461,35 @@ pred fulfilledScB {
 
 //run {fulfilledAB} for exactly 7 Semester, 6 Int
 //  run {fulfilledScB fulfilledAB} for exactly 7 Semester, 6 Int
+/**
+*===============================================================
+=================== New Requirements============================
+**/
 
+/**
+* This checks if a course satisfies the new Math Foundation
+**/
 pred satisfiesNewMathFoundation[c: Course] {
     c in (CS0220 + APMA1650) // +   CS1450
 }
 
+/**
+* This checks if a course satisfies the new Algorithms Foundations requirement
+**/
 pred satisfiesNewAlgoFoundation[c: Course]{
     c in (CS0500 + CS1010 + CS1550 + CS1570)
 }
 
+/**
+* This checks if a course satisfies the new AI/ML Foundations requirement
+**/
 pred satisfiesNewAIMLFoundation[c: Course] {
     c in (CS1410 + CS1420 + CS1430 + CS1460 + CS1470 + CS1951A)
 }
 
+/**
+* This predicate will produce instances of a courseplan that satisfy the new AB Requirements
+**/
 pred fulfilledABNew {
     //give a valid trace
     traces 
@@ -437,6 +523,9 @@ pred fulfilledABNew {
 
 // run fulfilledABNew for exactly 7 Semester
 
+/**
+* This predicate will produce traces of a courseplan that satisfy the new ScB requirements. 
+**/
 pred fulfilledScBNew {
     //need a valid trace
     traces
@@ -465,6 +554,9 @@ pred fulfilledScBNew {
         (math + alg + ai + sys + uppL1 + uppL2 + uppL3 + uppL4 + uppL5 + el1 + el2 + el3 + el4) in Semester.courses
     }
 }
+
+//================================================================
+//=========================Run Statements=========================
 
 // # old AB
 run {fulfilledAB} for exactly 6 Int  for {sig_binds} 

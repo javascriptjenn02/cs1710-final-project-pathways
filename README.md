@@ -16,6 +16,8 @@ Another abstraction that we made was remove the pathway specific intermediates f
 
 Other abstractions that were made were omitting winter and summer semesters, overriding, capstoning, graduate level courses, gap semesters, and placement exams for courses (really just CS19). We also reduced certain courses with Honors counterparts to just their regular, and the idea was that wherever a model would suggest someone to take MATH0520, for example, they could substitute it with MATH0540, but our model does not make that substitution. We also decided to not include the Laboratory sections that come with certain courses.
 
+Finally, we did not model the fact that some courses are restricted to certain semester levels as opposed to having prereqs.
+
 ## Signatures and Predicates
 
 ### Sigs

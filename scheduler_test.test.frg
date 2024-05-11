@@ -3,11 +3,11 @@ open "scheduler.frg"
 
 
  pred notInPreReqs {
-    all s : Semester {
-        all c : s.courses | {
+    // all s : Semester {
+        all c : Course | {
             c not in (c.prereqs).Course
         }
-    }
+    // }
  }
 
   pred notInPrereqs {
