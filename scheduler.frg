@@ -292,7 +292,7 @@ pred pathwayCompletedAB[p : PathWays] {
     }
 
 pred onePathwayDoneAB {
-        //there is one foundations intermediate
+    //there is one foundations intermediate
     //there is one math intermediate
     //there is one systems intermediate
     #{c : Course | c in Semester.courses and c in Registry.foundationsInter} >= 1
@@ -437,6 +437,18 @@ pred fulfilledSCBNew {
     }
 }
 
-//run {fulfilledABNew fulfilledAB} for exactly 7 Semester, 6 Int
+// # old AB
+// run {fulfilledAB} for exactly 6 Int  for {sig_binds} 
+// # new AB
+// run {fulfilledABNew} for exactly 6 Int  for {sig_binds} 
+// # old ScB
+// run {fulfilledScB} for exactly 6 Int  for {sig_binds} 
+// # old ScB and old AB
+// run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
+// # new ScB
+// run {fulfilledScBNew} for exactly 6 Int  for {sig_binds} 
+// # new ScB and old ScB
+// run {fulfilledScBNew fulfilledScB} for exactly 6 Int  for {sig_binds} 
+// # new AB and old AB 
 run {fulfilledABNew fulfilledAB} for exactly 6 Int  for {sig_binds} 
 
