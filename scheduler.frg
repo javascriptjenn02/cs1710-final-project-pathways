@@ -1,9 +1,9 @@
 #lang forge
 
 -- FOR WINDOWS
-option solver MiniSatProver
+//option solver MiniSatProver
 -- FOR MAC
-//  option solver Glucose
+  option solver Glucose
 
 /**
 this is the courses sig, it represents a single course with a set of prereqs
@@ -311,13 +311,13 @@ pred pathwayCompletedScB[p: PathWays] {
     }
 
 pred twoPathwaysDoneScB{
-    one p1, p2, p3, p4, p5, p6 : PathWays {
-        pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
-        (!pathwayCompletedScB[p3] and !pathwayCompletedScB[p4] and !pathwayCompletedScB[p5] and !pathwayCompletedScB[p6])
-    } 
+    // one p1, p2, p3, p4, p5, p6 : PathWays {
+    //     pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
+    //     (!pathwayCompletedScB[p3] and !pathwayCompletedScB[p4] and !pathwayCompletedScB[p5] and !pathwayCompletedScB[p6])
+    // } 
 
     //Proposed by Juan: (idk if this is faster but try running this and if it is we can keep it)
-    // some p1, p2 : PathWays | p1 != p2 and pathwayCompletedSCB[p1] and pathwayCompletedSCB[p2]
+     some p1, p2 : PathWays | p1 != p2 and pathwayCompletedScB[p1] and pathwayCompletedScB[p2]
 }
 pred fulfilledScB {
     traces
@@ -326,8 +326,8 @@ pred fulfilledScB {
 }
 
 
-run {fulfilledAB} for exactly 7 Semester, 6 Int
-// run {fulfilledScB fulfilledAB} for exactly 7 Semester
+//run {fulfilledAB} for exactly 7 Semester, 6 Int
+ run {fulfilledScB fulfilledAB} for exactly 7 Semester, 6 Int
 
 pred satisfiesNewMathFoundation[c: Course] {
     c in (CS0220 + APMA1650) // +   CS1450
