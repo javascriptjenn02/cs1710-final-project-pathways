@@ -16,19 +16,17 @@ sig Course {
 }
 
 /*
-* This is the Cart sig, it has four fields for 4 different courses. One of the fields is lone, 
-* meaning that 3 course carts are possible
+* This is the Semester sig, it has 3 fields that represent the classes taken in a given semester and the next and previous semester
 */
 abstract sig Semester {
-    // course1: one Course,
-    // course2: one Course,
-    // course3: one Course,
-    // course4: lone Course
     courses: set Course,
     next: lone Semester,
     prev: lone Semester
 }
 
+/**
+*These are the Fall and Spring Semester to ensure each semester switches 
+*/
 sig FallSemester extends Semester {}
 sig SpringSemester extends Semester {}
 
@@ -385,7 +383,7 @@ pred twoPathwaysDoneScB{
 }
 pred fulfilledScB {
     traces
-    // introSat
+    //introSat
     introSatDemoVersion
     twoPathwaysDoneScB
 }
@@ -469,17 +467,17 @@ pred fulfilledScBNew {
 }
 
 // # old AB
-// run {fulfilledAB} for exactly 6 Int  for {sig_binds} 
+run {fulfilledAB} for exactly 6 Int  for {sig_binds} 
 // # new AB
 // run {fulfilledABNew} for exactly 6 Int  for {sig_binds} 
 // # old ScB
 // run {fulfilledScB} for exactly 6 Int  for {sig_binds} 
 // # old ScB and old AB
-run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
+//run {fulfilledScB fulfilledAB} for exactly 6 Int  for {sig_binds} 
 // # new ScB
 // run {fulfilledScBNew} for exactly 6 Int  for {sig_binds} 
 // # new ScB and old ScB
-// run {fulfilledScBNew fulfilledScB} for exactly 6 Int  for {sig_binds} 
+//run {fulfilledScBNew fulfilledScB} for exactly 6 Int  for {sig_binds} 
 // # new AB and old AB 
 //run {fulfilledABNew fulfilledAB} for exactly 6 Int  for {sig_binds} 
 
