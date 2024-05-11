@@ -1,5 +1,7 @@
 const stage = new Stage() 
 
+
+
 const course_field = instance.field('courses').tuples()
 
 console.log(course_field[0].atoms()[1].id()) //THIS GETS THE COURSE
@@ -34,9 +36,16 @@ function addCourseGrid(semester, grid){
 populateSemCourses(course_field)
 
 // ---------------------------------- MAKING SVG OBJECTS ---------------------------------- //
+// const box = new ImageBox({
+//     coords: {x:100,y:100}, 
+//     url: "https://1000logos.net/wp-content/uploads/2022/05/Brown-University-Seal.png", 
+//     width:200, 
+//     height:200})
+// stage.add(box)
+
 const box = new ImageBox({
     coords: {x:100,y:100}, 
-    url: "https://1000logos.net/wp-content/uploads/2022/05/Brown-University-Seal.png", 
+    url: "https://raw.githubusercontent.com/javascriptjenn02/cs1710-final-project-pathways/6f7d3bd1509f73f34550cbc058f9013e801d2a54/title.svg", 
     width:200, 
     height:200})
 stage.add(box)
