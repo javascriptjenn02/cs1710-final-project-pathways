@@ -120,8 +120,10 @@ pred coursesHaveCorrectPreReqs {
     CS1810.prereqs = {(0 -> CS0200) + ( 0 -> CS0190)}
     CS1950N.prereqs = {(0 -> CS0200) + ( 0 -> CS0190)}
     CS1951X.prereqs = {(0 -> CS1710)}
+    MATH0180.prereqs = {(0 -> MATH100)}
     //Spring
     CS0300.prereqs = {(0 -> CS0200) + ( 0 -> CS0190)}
+    CS0500.prereqs = {(0 -> CS0220) + (1 -> CS0200)}
     CS1300.prereqs = {(0 -> CS0200) + (0 -> CS0190) + (1 -> CS0320)}
     CS1380.prereqs = { (0 -> CS0300) + (0 -> CS0320) + (0 -> CS0330)}
     CS1420.prereqs = {(0 -> CS0200) + (0 -> CS0190) + (1 -> APMA1650) + (2 -> MATH0520)}
