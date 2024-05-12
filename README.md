@@ -144,7 +144,7 @@ We had tests for the following plan:
 
 ## Running
 
-The bottom of our scheduler.frg file has a series of run statements that produces different traces that satisfy different combinations of requirements. To see an instance, uncomment the desired run statement.
+The bottom of our scheduler.frg file has a series of run statements that produces different traces that satisfy different combinations of requirements. To see an instance, uncomment the desired run statement. To use our visualizer, please copy the visualizer.js into the script tab in Sterling.
 
 ## Challenges
 
